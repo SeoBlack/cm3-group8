@@ -11,7 +11,6 @@ const authReducer = (state, action) => {
       localStorage.setItem("token", action.payload.token);
       return { ...state, user: action.payload, token: action.payload.token };
     case "LOGOUT":
-      // localStorage.removeItem("user");
       localStorage.removeItem("token");
       return {
         ...state,
@@ -31,7 +30,6 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       console.log("Verifying token:", token);
-      // Verify the token with the backend
       try {
         const response = await fetch("/api/auth/verify", {
           method: "GET",
