@@ -27,10 +27,12 @@ describe("Job API Routes", () => {
   };
 
   describe("GET /api/jobs", () => {
-    it("should return getAllJobs message", async () => {
+    //should return all jobs
+    it("should return all jobs", async () => {
+      //create a job
+      const job = await Job.create(validJobData);
       const response = await request(app).get("/api/jobs").expect(200);
-
-      expect(response.text).toBe("getAllJobs");
+      expect(response.body).toHaveLength(1);
     });
   });
 
@@ -396,12 +398,21 @@ describe("Job API Routes", () => {
   });
 
   describe("DELETE /api/jobs/:jobId", () => {
-    it("should return deleteJob message", async () => {
+    let createdJob;
+    beforeEach(async () => {
+      const jobData = {
+        title: validJobData.title,
+        type: validJobData.type,
+        description: validJobData.description,
+      };
+      createdJob = await Job.create(jobData);
+    });
+    it("should delete a job", async () => {
       const response = await request(app)
-        .delete("/api/jobs/507f1f77bcf86cd799439011")
+        .delete(`/api/jobs/${createdJob._id}`)
         .expect(200);
-
-      expect(response.text).toBe("deleteJob");
+      expect(response.body).toHaveProperty("id");
+      expect(response.body.title).toBe(validJobData.title);
     });
   });
 
