@@ -13,11 +13,7 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
-
-// Only connect to database if not in test environment
-if (process.env.NODE_ENV !== "test") {
-  connectDB();
-}
+connectDB();
 
 // Use the jobRouter for all "/jobs" routes
 app.use("/api/jobs", jobRouter);
