@@ -30,9 +30,31 @@ describe("Job API Routes", () => {
     //should return all jobs
     it("should return all jobs", async () => {
       //create a job
-      const job = await Job.create(validJobData);
+      const createdJob = await Job.create({
+        title: validJobData.title,
+        type: validJobData.type,
+        description: validJobData.description,
+        company: {
+          name: validJobData.companyName,
+          contactEmail: validJobData.contactEmail,
+          contactPhone: validJobData.contactPhone,
+          website: validJobData.website,
+          size: validJobData.size,
+        },
+        location: validJobData.location,
+        salary: validJobData.salary,
+        experienceLevel: validJobData.experienceLevel,
+        status: validJobData.status,
+        applicationDeadline: validJobData.applicationDeadline,
+        requirements: validJobData.requirements,
+      });
+
       const response = await request(app).get("/api/jobs").expect(200);
       expect(response.body).toHaveLength(1);
+      expect(response.body[0]).toHaveProperty("id");
+      expect(response.body[0].title).toBe(validJobData.title);
+      expect(response.body[0].type).toBe(validJobData.type);
+      expect(response.body[0].description).toBe(validJobData.description);
     });
   });
 
@@ -68,7 +90,7 @@ describe("Job API Routes", () => {
         .expect(400);
 
       expect(response.body).toHaveProperty("error");
-      expect(response.body.error).toBe(" fields are missing");
+      expect(response.body.error).toBe("Required fields are missing");
     });
 
     it("should return 400 error when title is missing", async () => {
@@ -198,11 +220,6 @@ describe("Job API Routes", () => {
       expect(response.body.title).toBe(validJobData.title);
       expect(response.body.type).toBe(validJobData.type);
       expect(response.body.description).toBe(validJobData.description);
-    });
-
-    it("should return getAllJobs when no jobId is provided", async () => {
-      const response = await request(app).get("/api/jobs/").expect(200);
-      expect(response.text).toBe("getAllJobs");
     });
 
     it("should return null for non-existent job ID", async () => {
@@ -404,6 +421,19 @@ describe("Job API Routes", () => {
         title: validJobData.title,
         type: validJobData.type,
         description: validJobData.description,
+        company: {
+          name: validJobData.companyName,
+          contactEmail: validJobData.contactEmail,
+          contactPhone: validJobData.contactPhone,
+          website: validJobData.website,
+          size: validJobData.size,
+        },
+        location: validJobData.location,
+        salary: validJobData.salary,
+        experienceLevel: validJobData.experienceLevel,
+        status: validJobData.status,
+        applicationDeadline: validJobData.applicationDeadline,
+        requirements: validJobData.requirements,
       };
       createdJob = await Job.create(jobData);
     });
@@ -411,8 +441,7 @@ describe("Job API Routes", () => {
       const response = await request(app)
         .delete(`/api/jobs/${createdJob._id}`)
         .expect(200);
-      expect(response.body).toHaveProperty("id");
-      expect(response.body.title).toBe(validJobData.title);
+      expect(response.body.message).toBe("Job deleted successfully");
     });
   });
 

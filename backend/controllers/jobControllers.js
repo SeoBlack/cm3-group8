@@ -5,17 +5,15 @@ const mongoose = require("mongoose");
 
 const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find(); 
+    const jobs = await Job.find();
     res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-
 };
 
 // POST /jobs
 const createJob = async (req, res) => {
-  console.log(req.body);
   const {
     title,
     type,
@@ -39,9 +37,11 @@ const createJob = async (req, res) => {
     !description ||
     !companyName ||
     !contactEmail ||
-    !contactPhone
+    !contactPhone ||
+    !salary ||
+    !location
   ) {
-    return res.status(400).json({ error: " fields are missing" });
+    return res.status(400).json({ error: "Required fields are missing" });
   }
   try {
     const job = await Job.create({
@@ -109,7 +109,9 @@ const updateJob = async (req, res) => {
     !description ||
     !companyName ||
     !contactEmail ||
-    !contactPhone
+    !contactPhone ||
+    !salary ||
+    !location
   ) {
     return res.status(400).json({ error: "All fields are required" });
   }
