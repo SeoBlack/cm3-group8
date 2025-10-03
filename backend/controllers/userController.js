@@ -28,10 +28,22 @@ const userSignup = async (req, res) => {
       profile_picture,
     } = req.body;
 
-    if (!username || !password) {
+    if (
+      !username ||
+      !password ||
+      !name ||
+      !phone_number ||
+      !gender ||
+      !date_of_birth ||
+      !membership_status ||
+      !address
+    ) {
       return res
         .status(400)
-        .json({ error: "Username and password are required" });
+        .json({
+          error:
+            "Username,name, phone number, gender, date of birth, membership status, address, password are required",
+        });
     }
 
     const existingUser = await User.findOne({ username });
