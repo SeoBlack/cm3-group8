@@ -28,6 +28,12 @@ const userSignup = async (req, res) => {
       profile_picture,
     } = req.body;
 
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ error: "Username and password are required" });
+    }
+
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ error: "Username already exists" });
@@ -63,6 +69,12 @@ const userLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ error: "Username and password are required" });
+    }
+
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(401).json({ error: "Invalid username or password" });
@@ -72,6 +84,7 @@ const userLogin = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
+
     const token = jwt.sign({ _id: user._id }, process.env.SECRET, {
       expiresIn: "7d",
     });
@@ -88,7 +101,7 @@ const verifyToken = async (req, res) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(400).json({ message: "Token is required" });
+      return res.status(401).json({ message: "Token is required" });
     }
 
     const token = authHeader.split(" ")[1];
@@ -96,7 +109,7 @@ const verifyToken = async (req, res) => {
 
     const user = await User.findById(decoded._id).select("-password");
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json({ user });

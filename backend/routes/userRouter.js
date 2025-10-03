@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const requireAuth = require("../middleware/requireAuth");
 const {
   getAllUsers,
   userSignup,
@@ -8,7 +8,7 @@ const {
   verifyToken,
 } = require("../controllers/userController");
 
-router.get("/", getAllUsers);
+router.get("/", requireAuth, getAllUsers);
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
 router.get("/verify", verifyToken);
