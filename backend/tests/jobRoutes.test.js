@@ -230,13 +230,24 @@ describe("Job API Routes", () => {
 
       expect(response.body).toBeNull();
     });
-
     it("should return 400 error for invalid jobId format", async () => {
       const response = await request(app)
         .get("/api/jobs/invalid-id")
-        .expect(500);
+        .expect(400);
 
       expect(response.body).toHaveProperty("error");
+      expect(response.body.error).toBe("Invalid job ID format");
+    });
+
+    // Added new test for non-existent valid ObjectId
+    it("should return 404 for non-existent but valid ObjectId", async () => {
+      const validButNonExistentId = "507f1f77bcf86cd799439011";
+      const response = await request(app)
+        .get(`/api/jobs/${validButNonExistentId}`)
+        .expect(404);
+
+      expect(response.body).toHaveProperty("error");
+      expect(response.body.error).toBe("Job not found");
     });
 
     it("should handle database errors gracefully", async () => {
