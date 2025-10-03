@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/HomePage";
 import AddJobPage from "./pages/AddJobPage";
 import EditJobPage from "./pages/EditJobPage";
+import JobPage from "./pages/JobPage";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./pages/NotFoundPage";
 
@@ -16,6 +17,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/add-job" element={<AddJobPage />} />
+            <Route path="/jobs/:id" element={<JobPage />} />
             <Route path="/edit-job/:id" element={<EditJobPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

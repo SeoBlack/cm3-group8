@@ -20,17 +20,19 @@ const EditJobPage = () => {
           title: data.title || "",
           type: data.type || "Full-Time",
           description: data.description || "",
-          companyName: data.companyName || "",
-          contactEmail: data.contactEmail || "",
-          contactPhone: data.contactPhone || "",
-          website: data.website || "",
-          size: data.size || "",
+          companyName: data.company?.name || "",
+          contactEmail: data.company?.contactEmail || "",
+          contactPhone: data.company?.contactPhone || "",
+          website: data.company?.website || "",
+          size: data.company?.size || "",
           location: data.location || "",
           salary: data.salary || "",
           experienceLevel: data.experienceLevel || "",
           requirements: data.requirements || "",
-          applicationDeadline: data.applicationDeadline || "",
-          status: data.status || "Open",
+          applicationDeadline: data.applicationDeadline
+            ? data.applicationDeadline.split("T")[0]
+            : "",
+          status: data.status || "open",
         });
       } catch (err) {
         setError(err.message);

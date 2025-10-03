@@ -15,10 +15,10 @@ const AddJobPage = () => {
     size: "",
     location: "",
     salary: "",
-    experienceLevel: "",
+    experienceLevel: "Entry",
     requirements: "",
     applicationDeadline: "",
-    status: "Open",
+    status: "open",
   };
 
   const handleAddJob = async (form) => {

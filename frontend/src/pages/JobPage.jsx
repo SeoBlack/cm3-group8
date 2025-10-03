@@ -8,13 +8,12 @@ const JobPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   const deleteJob = async (id) => {
     try {
       const res = await fetch(`/api/jobs/${id}`, {
         method: "DELETE",
         headers: {
-        //   Authorization: `Bearer ${token}`,
+          //   Authorization: `Bearer ${token}`,
         },
       });
       if (!res.ok) {
@@ -72,10 +71,8 @@ const JobPage = () => {
           <p>Phone: {job.company.contactPhone}</p>
 
           <>
-            <button onClick={() => onDeleteClick(job._id)}>delete</button>
-            <button onClick={() => navigate(`/edit-job/${job._id}`)}>
-              edit
-            </button>
+            <button onClick={() => onDeleteClick(id)}>delete</button>
+            <button onClick={() => navigate(`/edit-job/${id}`)}>edit</button>
           </>
         </>
       )}
