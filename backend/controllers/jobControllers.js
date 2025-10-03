@@ -2,9 +2,15 @@ const Job = require("../models/jobModel");
 const mongoose = require("mongoose");
 
 //GET / jobs;
+
 const getAllJobs = async (req, res) => {
-  res.send("getAllJobs");
-  //MINH
+  try {
+    const jobs = await Job.find(); 
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
 };
 
 // POST /jobs
@@ -138,11 +144,22 @@ const updateJob = async (req, res) => {
 };
 
 // DELETE /jobs/:jobId
-const deleteJob = async (req, res) => {
-  res.send("deleteJob");
-  //Minh
-};
 
+const deleteJob = async (req, res) => {
+  const { jobId } = req.params;
+  if (!jobId) {
+    return res.status(400).json({ error: "Job ID is required" });
+  }
+  try {
+    const job = await Job.findByIdAndDelete(jobId);
+    if (!job) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+    res.status(200).json({ message: "Job deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 module.exports = {
   getAllJobs,
   getJobById,
