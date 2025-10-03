@@ -13,6 +13,7 @@ const cors = require("cors");
 // Middlewares
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
+app.use(express.static("view"));
 app.use(express.urlencoded({ extended: true }));
 
 // Only connect to database if not in test environment
@@ -26,6 +27,10 @@ app.use("/api/users", userRouter);
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
+
+app.use((req, res) => {
+  res.sendFile(__dirname + "/view/index.html");
+});
 
 module.exports = app;
 
