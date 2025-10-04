@@ -9,11 +9,12 @@ const JobPage = () => {
   const [error, setError] = useState(null);
 
   const deleteJob = async (id) => {
+    const token = localStorage.getItem("token");
     try {
       const res = await fetch(`/api/jobs/${id}`, {
         method: "DELETE",
         headers: {
-          //   Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       if (!res.ok) {
