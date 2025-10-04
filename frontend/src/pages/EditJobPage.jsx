@@ -45,9 +45,13 @@ const EditJobPage = () => {
 
   const handleUpdateJob = async (form) => {
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch(`/api/jobs/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           title: form.title,
           type: form.type,
